@@ -1,0 +1,1 @@
+.v-content{display:flex;flex:1 0 auto;max-width:100%;transition:.2s cubic-bezier(.4,0,.2,1)}.v-content:not([data-booted=true]){transition:none!important}.v-content__wrap{flex:1 1 auto;max-width:100%;position:relative}@-moz-document url-prefix(){@media print{.v-content{display:block}}}

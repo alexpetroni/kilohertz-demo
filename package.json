@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "kilohertz server",
+  "main": "app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "NODE_ENV=development ./node_modules/nodemon/bin/nodemon.js src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-express": "^2.9.15",
+    "cloudinary": "^1.18.1",
+    "deepmerge": "^4.2.2",
+    "dotenv": "^8.2.0",
+    "fs-extra": "^8.1.0",
+    "graphql-type-json": "^0.3.1",
+    "imagekit": "^3.0.5",
+    "jszip": "^3.2.2",
+    "moment": "^2.24.0",
+    "mongoose": "^5.8.3",
+    "nodemon": "^2.0.2",
+    "slug": "^2.1.0"
+  }
+}
