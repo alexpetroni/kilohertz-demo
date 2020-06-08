@@ -15,6 +15,10 @@ const resolvers = {
     paginatedCategories (_, { args }, context) {
       return context.models.Category.paginatedCategories(args)
     },
+
+    categoriesWithMeta (_, { args }, context) {
+      return context.models.Category.categoriesWithMeta(args)
+    },
   },
 
   Mutation: {

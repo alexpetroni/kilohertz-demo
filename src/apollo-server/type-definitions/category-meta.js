@@ -3,7 +3,7 @@ const typeDef = `
   extend type Query {
     categoryMeta(id: ID!): CategoryMeta    # id is the parent Category
     categoriesMeta(idArr: [ID!]!): [CategoryMeta!]!
-
+    searchCategoriesMeta(args: JSON): [CategoryMeta!]!
   }
 
   extend type Mutation {

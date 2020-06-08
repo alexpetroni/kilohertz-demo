@@ -55,6 +55,10 @@ const model = {
     return await CategoryMeta.find({"category": {$in: idArr}}).populate("category")
   },
 
+  async searchCategoriesMeta (args) {
+    return await CategoryMeta.find().populate("category")
+  },
+
   async updateCategoryMeta (id, item) {
     let parsed = Object.assign({}, item)
     await CategoryMeta.findOneAndUpdate({category: id}, parsed,  { new: true, upsert: true })

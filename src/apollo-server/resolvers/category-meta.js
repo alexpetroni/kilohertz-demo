@@ -7,6 +7,10 @@ const resolvers = {
     categoriesMeta (_, { idArr }, context) {
       return context.models.CategoryMeta.categoriesMeta(idArr)
     },
+
+    searchCategoriesMeta (_, { args }, context) {
+      return context.models.CategoryMeta.searchCategoriesMeta(args)
+    },
   },
 
   Mutation: {

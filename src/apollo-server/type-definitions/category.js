@@ -6,6 +6,8 @@ const typeDef = `
     categories(args: JSON): [Category!]!
     searchCategories(args: JSON): [Category!]!
     paginatedCategories(args: JSON): PaginatedCategories!
+
+    categoriesWithMeta(args: JSON): [CategoryWithMeta!]!
   }
 
   extend type Mutation {
@@ -38,6 +40,11 @@ const typeDef = `
     parent: String
     ancestors: [String!]
     image: String
+  }
+
+  type CategoryWithMeta {
+    category: Category
+    meta: CategoryMeta
   }
 
   type PaginatedCategories{

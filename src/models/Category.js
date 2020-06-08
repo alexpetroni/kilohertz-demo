@@ -50,6 +50,56 @@ const paginatedCategories = async function (args = {}) {
 
 }
 
+const categoriesWithMeta = async function (args = {}) {
+  const {
+    search, searchFields = ['name', 'slug'], searchOptions = 'i',
+    sortBy='order',
+    sortDesc,
+    rawPrice,
+  } = args
+  let sortOrder = sortDesc ? -1 : 1
+
+  //await Category.find({}).sort([[sortBy, sortOrder]])
+
+  let result = await Category.aggregate([
+    {"$match": {}},
+    
+    aggExpr.addId(),
+
+    {
+    "$addFields": {  category: "$$ROOT"  }
+    },
+
+    { "$lookup" : {
+      "from": "categorymetas",
+      "localField": "id",
+      "foreignField": "category",
+      "as": "meta"
+    }},
+
+    {
+      "$addFields": {
+        "meta": { $arrayElemAt: ["$meta", 0] }
+      }
+    },
+
+    {
+      "$addFields": {
+        "meta.category": {"id": "$id"}
+      }
+    },
+
+    {
+      "$sort": { [sortBy]: sortOrder }
+    },
+    {
+      "$project": { category: 1, meta: 1}
+    },
+  ])
+  console.log('result %o', result)
+  return result
+}
+
 const createCategory = async function (input) {
   // check required fields
   utils.checkNonEmptyProperties(['name'], input)
@@ -137,6 +187,8 @@ module.exports = {
   categories,
   searchCategories,
   paginatedCategories,
+
+  categoriesWithMeta,
 
   createCategory,
   updateCategory,
