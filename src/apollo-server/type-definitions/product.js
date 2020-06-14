@@ -2,11 +2,18 @@ const typeDef = `
 
   extend type Query {
     product(id: ID!, raw:Boolean): Product
+    productBy(field: String!, value: String!, args: JSON): Product
+    productBySku(sku: String!, args: JSON): Product
+    productBySlug(slug: String!, args: JSON): Product
 
     paginatedProducts(args: JSON): PaginatedProducts!
     searchProducts(args: JSON): [Product!]!
 
     productCategories(field: String!, value: String!): [Category!]!
+
+    productFamily(field: String!, value: String!): Family
+
+    productVariation(parentId: ID!, id: ID!): PVItem
   }
 
   extend type Mutation {

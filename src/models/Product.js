@@ -31,7 +31,6 @@ const product = async function (id, raw) {
   let d = new Date()
   let dStr = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
 
-  // console.log('res product %o', res)
   return (await Product.aggregate(agg))[0]
 }
 
@@ -45,7 +44,8 @@ const productBy = async function (field, value, args = {}) {
 
   agg.push( ... prodAssamblerAgg(rawPrice))
 
-  return (await Product.aggregate(agg))[0]
+  let result = await Product.aggregate(agg)
+  return result[0]
 }
 
 const productBySku = async function (sku, args = {}) {
@@ -192,14 +192,19 @@ const productGallery = async function (field, value) {
 }
 
 const productFamily = async function (field, value) {
-  let productId = field == 'id' ? value : (await Product.findOne({[field]: value}))[0]['id']
+  let productId = null
+  if(field == 'id'){
+    productId = value
+  } else{
+    let prod = await Product.findOne({[field]: value}, '_id')
+    productId = prod && prod._id
+  }
   if (!productId) return null
   let family = await Family.findOne({"products": productId})
   .populate({
     path: 'products',
     select: 'id name slug type sku image'
     })
-
   return family
 }
 
@@ -801,12 +806,12 @@ function aggExprProductVariableFeatures () {
 function aggExprProductVariationsItems (rawPrice) {
   var currentDate = new Date()
   let agg = [
-    { "$lookup" : {
-      "from": "attachments",
-      "localField": "variations.image",
-      "foreignField": "_id",
-      "as": "tmpVariationsImages"
-    }},
+    // { "$lookup" : {
+    //   "from": "attachments",
+    //   "localField": "variations.image",
+    //   "foreignField": "_id",
+    //   "as": "tmpVariationsImages"
+    // }},
 
     {"$addFields": {
       "variations": { $cond: {

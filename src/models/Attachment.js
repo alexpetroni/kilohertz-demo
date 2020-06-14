@@ -1,8 +1,7 @@
 const imagekit = require('./../image-kit')
 
 const attachment = async function (id, args = {}) {
-  let result = await cloudinary.v2.api.resource(id)
-  return result
+  return await imagekit.getFileDetails(id)
 }
 
 const attachments = async function (idArr, args = {}) {

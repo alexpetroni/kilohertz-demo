@@ -4,17 +4,17 @@ const resolvers = {
       return context.models.Product.product(id, raw)
     },
 
-    // productBy (_, { field, value, args }, context) {
-    //   return context.models.Product.productBy(field, value, args)
-    // },
-    //
-    // productBySku (_, { sku, args }, context) {
-    //   return context.models.Product.productBySku(sku, args)
-    // },
-    //
-    // productBySlug (_, { slug, args }, context) {
-    //   return context.models.Product.productBySlug(slug, args)
-    // },
+    productBy (_, { field, value, args }, context) {
+      return context.models.Product.productBy(field, value, args)
+    },
+
+    productBySku (_, { sku, args }, context) {
+      return context.models.Product.productBySku(sku, args)
+    },
+
+    productBySlug (_, { slug, args }, context) {
+      return context.models.Product.productBySlug(slug, args)
+    },
     //
     // products (_, { idArr, args }, context) {
     //   return context.models.Product.products(idArr, args)
@@ -61,9 +61,9 @@ const resolvers = {
     //   return context.models.Product.productGallery(field, value)
     // },
     //
-    // productFamily (_, { field, value }, context) {
-    //   return context.models.Product.productFamily(field, value)
-    // },
+    productFamily (_, { field, value }, context) {
+      return context.models.Product.productFamily(field, value)
+    },
 
     // productDelivery (_, { id }, context) {
     //   return context.models.Product.productDelivery(id)
@@ -73,9 +73,9 @@ const resolvers = {
     //   return context.models.Product.productPriceRaw(id)
     // },
 
-    // productVariation (_, { parentId, id }, context) {
-    //   return context.models.Product.productVariation(parentId, id)
-    // },
+    productVariation (_, { parentId, id }, context) {
+      return context.models.Product.productVariation(parentId, id)
+    },
     //
     // productVariableFeatures (_, { id }, context) {
     //   return context.models.Product.productVariableFeatures(id)
