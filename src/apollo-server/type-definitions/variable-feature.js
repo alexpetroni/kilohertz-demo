@@ -22,6 +22,7 @@ const typeDef = `
   enum VariableFeatureType {
     TEXT
     COLOR_HEX
+    IMAGE
     SVG
   }
 
