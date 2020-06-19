@@ -7,38 +7,25 @@ const { product } = require('./Product')
 
 const { idForKeyValue } = require('./utils')
 
-
-const linkedProducts = async function (field, value, linkType, allVariations) {
+const linkedProducts = async function (field, value, linkType) {
   let productId = await idForKeyValue(field, value, Product)
   if(!productId) return null
+
   let lp = await LinkedProducts.findOne({product: ObjectId(productId), linkType})
   if(!lp) return null
   let products = await Promise.all(lp.links.map(e => product(e.product)))
 
-  let results = { id: lp.id, links: []}
+  let result = { id: lp.id, links: []}
   // replace id's with product and remove empty products
   lp.links.map((e, index) => {
     if(products[index]){
-      results.links.push({product: products[index], variationsSku: e.variationsSku})
+      result.links.push({product: products[index], variationsSku: e.variationsSku})
     }
   })
 
+  result.links = result.links.map(e => stripLinkedProductToVariations(e))
 
-  if(!allVariations){
-    // console.log('before filter variations results.links %o', results.links)
-    results.links = results.links.map(e => stripLinkedProductToVariations(e))
-    results.links = results.links.map(e => stripLinkedProductToVariableFeatures(e))
-    //   {
-    //   if(e.product.type == 'VARIABLE' && e.variationsSku && e.variationsSku.length){
-    //     e.product.variations = e.product.variations.filter(v => {
-    //       return e.variationsSku.indexOf(v.sku) != -1
-    //     })
-    //   }
-    //   return e
-    // })
-  }
-  // console.log('after filter variations results.links %o', results.links)
-  return results
+  return result
 }
 
 const updateLinkedProducts = async function (productId, linkType, inputArr) {

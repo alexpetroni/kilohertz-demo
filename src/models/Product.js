@@ -442,7 +442,6 @@ function prodAssamblerAgg (rawPrice) {
     ... aggExprProductVariableFeatures(),
     ... aggExprProductVariationsItems(rawPrice),
     ... aggExprBrand(),
-    // ... productImageAgg()
   ]
 }
 

@@ -1,6 +1,6 @@
 const typeDef = `
   extend type Query {
-    linkedProducts(field: String!, value: String!, linkType: String!, allVariations: Boolean): ProductLinks
+    linkedProducts(field: String!, value: String!, linkType: String!): ProductLinks
   }
 
   extend type Mutation {

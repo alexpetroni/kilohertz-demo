@@ -1,7 +1,7 @@
 const resolvers = {
   Query: {
-    linkedProducts (_, { field, value, linkType, allVariations }, context) {
-      return context.models.LinkedProducts.linkedProducts(field, value, linkType, allVariations)
+    linkedProducts (_, { field, value, linkType }, context) {
+      return context.models.LinkedProducts.linkedProducts(field, value, linkType)
     }
   },
 
