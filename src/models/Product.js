@@ -5,12 +5,13 @@ const { Product, Family } = require('./../mongo/models')
 
 const { productAttachmentsSet, updateProductAttachmentsSet } = require('./ProductAttachmentsSet')
 
-const { publicDir, homeUrl } = require('./../config')
+const { publicDirPath, homeUrl } = require('./../config')
+
+const omit = require('lodash.omit')
 
 const utils = require('./utils')
 const aggExpr = require('./aggregation')
-const fse = require('fs-extra')
-const JSZip = require('jszip')
+
 
 const newItemIdPrefix = '__new__'
 const isNewItemRegExp = new RegExp(newItemIdPrefix)
@@ -236,7 +237,8 @@ const productsExport = async function () {
 
   let prodArr = []
   for (let i = 0; i < idArr.length; i++){
-    let prod = await Product.findById(idArr[i]).populate('categories', 'name').populate('tags', 'name').populate('brand', 'name').lean()
+    // let prod = await product(idArr[i])
+    let prod = await Product.findById(idArr[i]).populate('brand', 'name').lean()
     let variations = null
 
     if(prod.type == 'VARIABLE'){
@@ -244,7 +246,7 @@ const productsExport = async function () {
       delete prod.variations
     }
 
-    prod = deleteIdsFromProd(prod)
+    prod = cleanProductForExport(prod)
 
     prodArr.push(prod)
 
@@ -252,24 +254,35 @@ const productsExport = async function () {
       variations.map(e => {
         e.parentSku = prod.sku
         e.type = 'VARIATION'
-        delete e._id
-        prodArr.push(e)
+        prodArr.push(cleanProductVariationForExport(e))
       })
     }
   }
 
-  let prettyPrint = JSON.stringify(prodArr, null, 4)
-  let fileName = 'products-export'
-  let exportDir = '/admin/tmp'
-  try{
-    let zipFilePath = await zipContentToFile(prettyPrint, fileName, publicDir + exportDir)
-  }catch(err){
-    console.error(err)
-    throw new Error(err.message)
+  return prodArr
+}
+
+function cleanProductForExport (p) {
+  if(!p) return
+  let product = omit(p, ['categories', 'tags', 'createdAt', 'updatedAt', '_id', '__v'])
+
+  // delete '_id' from sub-arrays
+  let subArr = ['previewFields', 'variableFeatures']
+  subArr.forEach(item => {
+    if(product[item]) {
+      product[item] = product[item].map(e => omit(e, '_id'))
+    }
+  });
+
+  if(product.brand) {
+    delete product.brand._id
   }
 
-  let url = homeUrl + '/' + exportDir + '/' + fileName + '.zip'
-  return url
+  return product
+}
+
+function cleanProductVariationForExport (v) {
+  return omit(v, ['createdAt', 'updatedAt', '_id', '__v'])
 }
 
 const createProduct = async function (input) {
@@ -584,24 +597,6 @@ function aggExprVariationItems (id, raw = false) {
 async function productVariableFeaturesLean (id) {
   const vfs = await Product.findById(id, 'variableFeatures')
   return vfs && vfs.variableFeatures ? vfs.variableFeatures : null
-}
-
-async function zipContentToFile (content, fileName, destination = '.', extension = 'txt') {
-  if(!fileName) throw new Error('No filename provided')
-
-  await fse.ensureDir(destination)
-
-  let zip = new JSZip()
-  let path = destination +'/' + fileName + '.zip'
-
-  return new Promise((resolve, reject) => {
-    zip.file(fileName + '.' + extension, content)
-  .generateNodeStream({type:'nodebuffer',streamFiles:true})
-  .pipe(fse.createWriteStream(path))
-  .on('finish', function () {
-      resolve(path)
-    })
-  })
 }
 
 
@@ -964,24 +959,6 @@ function aggExprProductVariationCase (field, value, raw) {
   }
 
   return aggExpr
-}
-
-function deleteIdsFromProd (prod) {
-  delete prod._id
-  let refFields = ['categories', 'tags', 'brand', 'previewFields']
-  refFields.map(field => {
-    if(prod[field]){
-      if(prod[field]['_id']) delete prod[field]['_id']
-      if(Array.isArray(prod[field]) && prod[field].length){
-        prod[field] = prod[field].map(e => {
-          delete e._id
-          return e
-        })
-      }
-    }
-  })
-
-  return prod
 }
 
 

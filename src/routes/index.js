@@ -26,6 +26,7 @@
 // }
 
 const imagekit = require('./../image-kit')
+const { exportProducts } = require('./../bulk-data/products')
 
 
 function wireRoutes (app) {
@@ -42,9 +43,19 @@ function wireRoutes (app) {
     res.send(auth)
   })
 
+
+  app.get('/export/products', async (req, res) => {
+    let result = await exportProducts()
+    
+    res.send(result)
+  })
+
+
   app.get('/test', function(req, res){
     res.send("Hello test")
   })
+
+
 
   return app
 }

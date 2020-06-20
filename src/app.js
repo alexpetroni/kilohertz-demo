@@ -1,4 +1,4 @@
-const { port, publicDir, jwtSecret, homeUrl, mongodbUri } = require('./config')
+const { port, publicDirPath, jwtSecret, homeUrl, mongodbUri } = require('./config')
 
 const express = require('express')
 const server = require('./apollo-server')
@@ -18,9 +18,9 @@ server.applyMiddleware({ app, path: '/playground' })
 wireRoutes(app)
 
 // Static files
-app.use(express.static(publicDir))
-app.use(express.static(publicDir + '/admin'))
-app.use(express.static(publicDir + '/front'))
+app.use(express.static(publicDirPath))
+app.use(express.static(publicDirPath + '/admin'))
+app.use(express.static(publicDirPath + '/front'))
 
 // ERRORS
 app.use(function (err, req, res, next) {
