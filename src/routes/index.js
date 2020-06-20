@@ -28,7 +28,6 @@
 const imagekit = require('./../image-kit')
 
 
-
 function wireRoutes (app) {
   // app.post('/upload',
   //   // upload.array('attachments'),
@@ -38,7 +37,7 @@ function wireRoutes (app) {
   //   uploadResponse
   // )
   //
-  app.get('/imagekitauth', function(req, res){
+  app.get(process.env.SERVER_AUTH_PATH_IMGKIT, function(req, res){
     const auth = imagekit.getAuthenticationParameters()
     res.send(auth)
   })
