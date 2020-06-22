@@ -63,7 +63,7 @@ const categoriesWithMeta = async function (args = {}) {
 
   let result = await Category.aggregate([
     {"$match": {}},
-    
+
     aggExpr.addId(),
 
     {
@@ -96,7 +96,7 @@ const categoriesWithMeta = async function (args = {}) {
       "$project": { category: 1, meta: 1}
     },
   ])
-  console.log('result %o', result)
+
   return result
 }
 
