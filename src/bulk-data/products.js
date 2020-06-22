@@ -2,6 +2,7 @@ const moment = require('moment')
 const { productsExport } = require('./../models/Product')
 
 function productExportFileName () {
+  // return `products-export-${moment().format('YYYY-MM-DD_h_mm')}`
   return `products-export-${moment().format('YYYY-MM-DD')}`
 }
 

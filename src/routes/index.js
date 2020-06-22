@@ -1,6 +1,14 @@
+const { homeUrl, publicDirPath } = require('./../config')
+const path = require('path')
+const fse = require('fs-extra')
 const imagekit = require('./../image-kit')
 const { productsJSON, productExportFileName } = require('./../bulk-data/products')
-const { zipFileContent } = require('./../bulk-data/zip-utils')
+const { zipContentTo } = require('./../bulk-data/zip-utils')
+
+
+
+
+
 
 function wireRoutes (app) {
 
@@ -11,14 +19,21 @@ function wireRoutes (app) {
 
 
   app.get('/export/products', async (req, res) => {
-    const jsonData = await productsJSON()
     const fileName = productExportFileName()
-    const zipFile = await zipFileContent(fileName, jsonData)
+    const outputDir = 'export/products'
+    const destination = path.join(publicDirPath, outputDir )
 
-    res.set('Content-Type', 'application/zip')
-    res.set('Content-Disposition', `attachment; filename=${fileName}.zip`)
-    res.set('Content-Length', zipFile.length)
-    res.end(zipFile, 'binary')
+    const jsonData = await productsJSON()
+
+    // clean previous exports and recreate a clean one
+    await fse.remove(destination)
+    await fse.ensureDir(destination)
+
+    const zipedFileName = await zipContentTo(jsonData, fileName, destination)
+
+    const url = homeUrl + '/' + outputDir + '/' + zipedFileName
+
+    res.send(url)
   })
 
 
