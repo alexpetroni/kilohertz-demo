@@ -23,24 +23,16 @@ function wireRoutes (app) {
     const outputDir = 'export/products'
     const destination = path.join(publicDirPath, outputDir)
 
-    console.log('fileName %s', fileName)
-    console.log('outputDir %s', outputDir)
-    console.log('destination %s', destination)
-
     const jsonData = await productsJSON()
-
-    console.log('export jsonData %o', jsonData)
 
     // clean previous exports and recreate a clean one
     await fse.remove(destination)
     await fse.ensureDir(destination)
 
-    console.log('should exist now...')
-
     const zipedFileName = await zipContentTo(jsonData, fileName, destination)
 
     const url = homeUrl + '/' + outputDir + '/' + zipedFileName
-    console.log('url %s', url)
+
     res.send(url)
   })
 
