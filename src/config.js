@@ -16,4 +16,6 @@ const config = {
   jwtSecret: process.env.JWT_SECRET,
 }
 
+console.log('config %o', config)
+
 module.exports = config
