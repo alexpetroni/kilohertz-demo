@@ -46,14 +46,15 @@ const productAttachmentsSets = async function (field, value, nameArr) {
 }
 
 
-const updateProductAttachmentsSet = async function ({product, name, attachments =[]}) {
+const updateProductAttachmentsSet = async function ({product, name, attachments = []}) {
   if(!product || !name) {
     throw new Error('Required field should not be empty')
   }
-
-  let result = await ProductAttachmentsSet.findOneAndUpdate({product: ObjectId(product), name}, {product, name, attachments}, { upsert: true, new: true })
+  console.log('update product %s, name %s, attachments %o', product, name, attachments)
+  let result = await ProductAttachmentsSet.findOneAndUpdate({product: ObjectId(product), name}, { $set: {product, name, attachments} }, { upsert: true, new: true })
+  console.log('result %o', result)
   let rr = await productAttachmentsSet("id", product, name)
-
+  console.log('rr %o', rr)
   return await productAttachmentsSet("id", product, name)
 }
 

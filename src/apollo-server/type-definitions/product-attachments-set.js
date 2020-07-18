@@ -1,3 +1,4 @@
+
 const typeDef = `
 
   extend type Query {
@@ -18,13 +19,28 @@ const typeDef = `
     updatedAt: Date
     product: String! # productId
     name: String!
-    attachments: [String!]!
+    attachments: [AttSetItem!]!
   }
 
   input ProductAttachmentsSetInput {
     product: ID!
     name: String!
-    attachments: [ID!]
+    attachments: [AttSetItemInput!]
+  }
+
+  type AttSetItem {
+    type: String
+    path: String
+    title: String
+  }
+
+
+
+
+  input AttSetItemInput {
+    type: String
+    path: String
+    title: String
   }
 
 `

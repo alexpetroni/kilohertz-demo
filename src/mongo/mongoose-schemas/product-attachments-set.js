@@ -9,7 +9,13 @@ const schemaDefinition = new Schema({
     type: String
   },
 
-  attachments: [ String ]
+  attachments: {
+    type: [ {
+      type: { type: String} ,
+      path: String,
+      title: String,
+    } ]
+  }
 },
 
 {timestamps: true})
