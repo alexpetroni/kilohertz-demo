@@ -27,6 +27,10 @@ const productBaseSchema = {
     type: String,
   },
 
+  longDescription: {
+    type: String,
+  },
+
   technicalInformation: {
     type: String,
   },

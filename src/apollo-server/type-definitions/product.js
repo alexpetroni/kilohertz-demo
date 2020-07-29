@@ -65,6 +65,7 @@ const typeDef = `
 
     excerpt: String
     description: String
+    longDescription: String
 
     technicalInformation: String
 
@@ -129,6 +130,7 @@ const typeDef = `
 
     excerpt: String
     description: String
+    longDescription: String
 
     technicalInformation: String
 
@@ -199,6 +201,7 @@ const typeDef = `
 
     excerpt: String
     description: String
+    longDescription: String
 
     technicalInformation: String
 
@@ -282,6 +285,7 @@ const typeDef = `
 
     excerpt: String
     description: String
+    longDescription: String
 
     technicalInformation: String
 
@@ -358,6 +362,7 @@ const typeDef = `
 
     excerpt: String
     description: String
+    longDescription: String
 
     technicalInformation: String
 
@@ -423,6 +428,7 @@ const typeDef = `
 
     excerpt: String
     description: String
+    longDescription: String
 
     technicalInformation: String
 
@@ -482,6 +488,7 @@ const typeDef = `
 
     excerpt: String
     description: String
+    longDescription: String
 
     technicalInformation: String
 
@@ -544,6 +551,7 @@ const typeDef = `
     name: String
     slug: String
     description: String
+    longDescription: String
     items: [VariableFeatureItem!]!
   }
 
